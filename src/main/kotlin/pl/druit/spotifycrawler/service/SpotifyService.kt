@@ -7,8 +7,9 @@ import pl.druit.spotifycrawler.clients.SpotifyClient
 class SpotifyService(
     private val spotifyClient: SpotifyClient,
 ) {
-    fun searchShows(showName: String) {
-        val shows = spotifyClient.findShowByName(showName)
-
+    fun searchShows(showName: String, limit: Int) {
+        val shows = spotifyClient.findShowByName(showName, limit)
+        shows.filter { it.name == showName }
+        // TODO: for shows matching searched one save episodes info to csv
     }
 }

@@ -9,5 +9,5 @@ import org.springframework.boot.runApplication
 class SpotifyCrawlerApplication
 
 fun main(args: Array<String>) {
-    runApplication<SpotifyCrawlerApplication>(*args)
+    runApplication<SpotifyCrawlerApplication>(*args).close()
 }

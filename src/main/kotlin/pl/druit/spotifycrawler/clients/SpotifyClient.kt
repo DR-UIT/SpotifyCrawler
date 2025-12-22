@@ -17,9 +17,9 @@ class SpotifyClient(
     private val restTemplate: RestTemplate,
     private val config: SpotifyConfig,
 ) {
-    fun findShowByName(name: String): List<ShowDto> {
+    fun findShowByName(name: String, limit: Int): List<ShowDto> {
         val response = restTemplate.exchange(
-            buildSearchUrl(query = name),
+            buildSearchUrl(query = name, limit = limit),
             GET,
             HttpEntity<Void>(buildDefaultHeaders()),
             SearchResponseDto::class.java // TODO: response class
@@ -31,8 +31,8 @@ class SpotifyClient(
         return shows.items
     }
 
-    private fun buildSearchUrl(query: String): String =
-        "${config.searchUrl()}?q=$query&type=show&market=PL&limit=20" // TODO: proper type, market, limit
+    private fun buildSearchUrl(query: String, limit: Int): String =
+        "${config.defaultUrl}/search?q=$query&type=show&market=PL&limit=$limit"
 
     private fun buildDefaultHeaders() = HttpHeaders().apply {
         contentType = APPLICATION_JSON
@@ -54,7 +54,7 @@ data class ShowResponseDto(
     fun stringRepresentation(): String {
         val header = "Odnaleziono następujące podcasty ($limit/$total):"
         val shows = items
-            .mapIndexed { idx, item -> idx.toString() + item.stringRepresentation() }
+            .mapIndexed { idx, item -> (idx + 1).toString() + "\n" + item.stringRepresentation() }
             .joinToString(separator = "\n===\n")
         return header + shows
     }
