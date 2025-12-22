@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: SpotifyCrawler
+  shell:
+    interactive:
+      enabled: true
+
+spotify:
+  defaultUrl: https://api.spotify.com/v1
+  auth:
+    url: https://accounts.spotify.com/api/token
+    client-id: ${SPOTIFY_CLIENT_ID}
+    client-secret: ${SPOTIFY_CLIENT_SECRET}
+  paths:
+    shows: /shows
+    episodes: /episodes
+    search: /search
