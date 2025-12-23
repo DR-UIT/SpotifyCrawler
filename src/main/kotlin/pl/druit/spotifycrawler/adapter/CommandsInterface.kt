@@ -21,7 +21,7 @@ class CommandsInterface(
 
     @ShellMethod(
         key = ["export-episodes"],
-        value = "Wyeksportuj wszystkie odcinki danego podcastu, wydane po 2019 roku"
+        value = "Wyeksportuj wszystkie odcinki danego podcastu, wydane od 2020 roku"
     )
     fun exportShowEpisodes(
         @ShellOption(help = "Id podcastu, którego odcinki chcesz wyeksportować") showId: String,
@@ -32,41 +32,41 @@ class CommandsInterface(
 
     @ShellMethod(
         key = ["export-prepared"],
-        value = "Wyeksportuj wszystkie odcinki z przygotowanej listy, wydane po 2019 roku"
+        value = "Wyeksportuj wszystkie odcinki z przygotowanej listy, wydane od 2020 roku"
     )
     fun exportPrepared(
         @ShellOption(help = "Czy dla testów", defaultValue = "false") isTest: Boolean,
     ) {
-        PODCASTS_LIST.forEach { (customFilename, showId) ->
-            spotifyService.exportAllEpisodes(customFilename, showId, isTest)
+        PODCASTS_LIST.forEach { (customShowName, showId) ->
+            spotifyService.exportAllEpisodes(customShowName, showId, isTest)
         }
     }
 
     @ShellMethod(
         key = ["export-random"],
-        value = "Wyeksportuj losowych X odcinków z przygotowanej listy, wydane po Y roku"
+        value = "Wyeksportuj losowych 'drawnNumber' odcinków z przygotowanej listy, wydane od 'thresholdYear' roku"
     )
     fun exportRandomXFromEpisodes(
         @ShellOption(help = "Czy dla testów", defaultValue = "false") isTest: Boolean,
         @ShellOption(help = "Ilość odcinków do wylosowania", defaultValue = "10") drawnNumber: Int,
         @ShellOption(help = "Rok, od którego brać pod uwagę odcinki", defaultValue = "2020") thresholdYear: Int,
     ) {
-        PODCASTS_LIST.forEach { (customFilename, showId) ->
-            spotifyService.exportRandomEpisodes(customFilename, showId, isTest, drawnNumber, thresholdYear)
+        PODCASTS_LIST.forEach { (customShowName, showId) ->
+            spotifyService.exportRandomEpisodes(customShowName, showId, isTest, drawnNumber, thresholdYear)
         }
     }
 
     @ShellMethod(
         key = ["export-all"],
-        value = "Wyeksportuj wszystkie oraz losowe 'drawnNumber' odcinków z przygotowanej listy, wydane po 'thresholdYear' roku"
+        value = "Wyeksportuj wszystkie oraz losowe 'drawnNumber' odcinków z przygotowanej listy, wydane od 'thresholdYear' roku"
     )
     fun exportAll(
         @ShellOption(help = "Czy dla testów", defaultValue = "false") isTest: Boolean,
         @ShellOption(help = "Ilość odcinków do wylosowania", defaultValue = "10") drawnNumber: Int,
         @ShellOption(help = "Rok, od którego brać pod uwagę odcinki", defaultValue = "2020") thresholdYear: Int,
     ) {
-        PODCASTS_LIST.forEach { (customFilename, showId) ->
-            spotifyService.exportAllAndRandom(customFilename, showId, isTest, drawnNumber, thresholdYear)
+        PODCASTS_LIST.forEach { (customShowName, showId) ->
+            spotifyService.exportAllAndRandom(customShowName, showId, isTest, drawnNumber, thresholdYear)
         }
     }
 
