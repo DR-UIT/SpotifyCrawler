@@ -27,17 +27,51 @@ class CommandsInterface(
         @ShellOption(help = "Id podcastu, którego odcinki chcesz wyeksportować") showId: String,
         @ShellOption(help = "Czy dla testów", defaultValue = "false") isTest: Boolean,
     ) {
-        spotifyService.exportEpisodes(showId, isTest)
+        spotifyService.exportAllEpisodes(showId, isTest)
     }
 
     @ShellMethod(
         key = ["export-prepared"],
-        value = "Wyeksportuj wszystkie odcinku z przygotowanej listy, wydane po 2019 roku"
+        value = "Wyeksportuj wszystkie odcinki z przygotowanej listy, wydane po 2019 roku"
     )
     fun exportPrepared(
         @ShellOption(help = "Czy dla testów", defaultValue = "false") isTest: Boolean,
     ) {
-        val preparedShowsList = listOf(
+        PODCASTS_LIST.forEach { (customFilename, showId) ->
+            spotifyService.exportAllEpisodes(customFilename, showId, isTest)
+        }
+    }
+
+    @ShellMethod(
+        key = ["export-random"],
+        value = "Wyeksportuj losowych X odcinków z przygotowanej listy, wydane po Y roku"
+    )
+    fun exportRandomXFromEpisodes(
+        @ShellOption(help = "Czy dla testów", defaultValue = "false") isTest: Boolean,
+        @ShellOption(help = "Ilość odcinków do wylosowania", defaultValue = "10") drawnNumber: Int,
+        @ShellOption(help = "Rok, od którego brać pod uwagę odcinki", defaultValue = "2020") thresholdYear: Int,
+    ) {
+        PODCASTS_LIST.forEach { (customFilename, showId) ->
+            spotifyService.exportRandomEpisodes(customFilename, showId, isTest, drawnNumber, thresholdYear)
+        }
+    }
+
+    @ShellMethod(
+        key = ["export-all"],
+        value = "Wyeksportuj wszystkie oraz losowe 'drawnNumber' odcinków z przygotowanej listy, wydane po 'thresholdYear' roku"
+    )
+    fun exportAll(
+        @ShellOption(help = "Czy dla testów", defaultValue = "false") isTest: Boolean,
+        @ShellOption(help = "Ilość odcinków do wylosowania", defaultValue = "10") drawnNumber: Int,
+        @ShellOption(help = "Rok, od którego brać pod uwagę odcinki", defaultValue = "2020") thresholdYear: Int,
+    ) {
+        PODCASTS_LIST.forEach { (customFilename, showId) ->
+            spotifyService.exportAllAndRandom(customFilename, showId, isTest, drawnNumber, thresholdYear)
+        }
+    }
+
+    companion object {
+        private val PODCASTS_LIST = listOf(
             "kryminatorium" to "4wEuac2C7cpuvy8HBjfvW7",
             "piate_nie_zabijaj" to "6JxVYXIYqPvucDdKJli1rN",
             "olga_herring_true_crime" to "6uBaxDWFmaPQukcf1Rv6qG",
@@ -49,8 +83,5 @@ class CommandsInterface(
             "z_morderstwem_im_do_twarzy" to "7y2lRgXQbgYe7tgQlhC1OJ",
             "pieklo_jest_tu" to "1gkP4jFmgLWp1RSaTpm0MZ",
         )
-        preparedShowsList.forEach { (customFilename, showId) ->
-            spotifyService.exportEpisodes(customFilename, showId, isTest)
-        }
     }
 }
