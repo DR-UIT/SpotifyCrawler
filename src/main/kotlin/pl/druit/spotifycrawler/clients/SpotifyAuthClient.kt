@@ -24,9 +24,7 @@ class SpotifyAuthClient(
             HttpEntity(requestBody, headers),
             SpotifyAccessTokenResponse::class.java
         )
-
         // TODO: error/null handling
-
         return response.body!!
     }
 
