@@ -19,7 +19,11 @@ class SpotifyService(
     }
 
     fun exportAllEpisodes(showId: String, isTest: Boolean) {
-        exportAllEpisodes(showId = showId, isTest = isTest)
+        exportAllEpisodes(
+            customShowName = null,
+            showId = showId,
+            isTest = isTest,
+        )
     }
 
     fun exportAllAndRandom(
